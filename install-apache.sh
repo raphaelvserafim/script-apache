@@ -49,6 +49,8 @@ sudo make-ssl-cert generate-default-snakeoil --force-overwrite
 sudo a2ensite default-ssl
 sudo service apache2 reload
 
+sudo apt-get  composer -y
+
 # Monitor Apache logs
 sudo apt-get install logwatch -y
 
