@@ -49,10 +49,13 @@ sudo make-ssl-cert generate-default-snakeoil --force-overwrite
 sudo a2ensite default-ssl
 sudo service apache2 reload
 
-apt install composer
+apt install composer -y
 
 
 # Monitor Apache logs
 sudo apt-get install logwatch -y
+
+sudo snap install core -y
+sudo snap refresh core
 
 echo "Apache web server setup complete."
