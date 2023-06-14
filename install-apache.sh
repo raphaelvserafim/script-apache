@@ -8,28 +8,28 @@ show_dialog() {
         dialog --msgbox "Instalação cancelada." 10 30
         exit 0
     fi
-    
+
     # Solicita o nome de usuário do Git
     GIT_USERNAME=$(dialog --stdout --inputbox "Digite o nome de usuário do Git:" 10 40)
     if [[ $? -ne 0 ]]; then
         dialog --msgbox "Instalação cancelada." 10 30
         exit 0
     fi
-    
+
     # Solicita o email do Git
     GIT_EMAIL=$(dialog --stdout --inputbox "Digite o email do Git:" 10 40)
     if [[ $? -ne 0 ]]; then
         dialog --msgbox "Instalação cancelada." 10 30
         exit 0
     fi
-    
+
     # Instala o pacote dialog
     sudo apt-get update
     sudo apt-get install dialog -y
-    
+
     # Variável para controlar o progresso da instalação
     local progress=0
-    
+
     # Atualiza a lista de pacotes e instala o Apache
     sudo apt-get update
     sudo apt-get install apache2 -y
@@ -37,7 +37,7 @@ show_dialog() {
     
     dialog --infobox "Apache instalado com sucesso." 10 30
     sleep 1
-    
+
     # Instala o Snap package manager e atualiza o pacote core
     sudo apt-get install snapd -y
     sudo snap install core; sudo snap refresh core
@@ -45,7 +45,7 @@ show_dialog() {
     
     dialog --infobox "Snap e Core instalados com sucesso." 10 30
     sleep 1
-    
+
     # Instala as dependências necessárias para o PHP e o MySQL
     sudo apt-get install curl -y
     sudo apt-get install mysql-server -y
@@ -54,7 +54,7 @@ show_dialog() {
     
     dialog --infobox "PHP e MySQL instalados com sucesso." 10 30
     sleep 1
-    
+
     # Define a senha fornecida pelo usuário para o MySQL
     echo "mysql-server mysql-server/root_password password $MYSQL_PASSWORD" | sudo debconf-set-selections
     echo "mysql-server mysql-server/root_password_again password $MYSQL_PASSWORD" | sudo debconf-set-selections
@@ -76,7 +76,7 @@ show_dialog() {
     
     dialog --infobox "Extensões do PHP instaladas com sucesso." 10 30
     sleep 1
-    
+
     sudo apt-get install composer -y
     sudo apt-get install git -y
     
@@ -90,7 +90,7 @@ show_dialog() {
     
     dialog --infobox "MySQL configurado com sucesso." 10 30
     sleep 1
-    
+
     # Habilita o firewall e permite tráfego HTTP e SSH
     sudo apt-get install ufw -y
     sudo ufw enable
@@ -100,7 +100,7 @@ show_dialog() {
     
     dialog --infobox "Firewall configurado com sucesso." 10 30
     sleep 1
-    
+
     # Desativa a listagem de diretórios na configuração do Apache
     echo "Options -Indexes" | sudo tee -a /etc/apache2/apache2.conf
     
