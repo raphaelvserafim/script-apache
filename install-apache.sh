@@ -8,27 +8,27 @@ show_dialog() {
         dialog --msgbox "Instalação cancelada." 10 30
         clear
         exit 0
-        
     fi
-    clear
+    
     # Solicita o nome de usuário do Git
     GIT_USERNAME=$(dialog --stdout --inputbox "Digite o nome de usuário do Git:" 10 40)
     if [[ $? -ne 0 ]]; then
         dialog --msgbox "Instalação cancelada." 10 30
         clear
         exit 0
-        
     fi
-    clear
+    
     # Solicita o email do Git
     GIT_EMAIL=$(dialog --stdout --inputbox "Digite o email do Git:" 10 40)
     if [[ $? -ne 0 ]]; then
         dialog --msgbox "Instalação cancelada." 10 30
         clear
         exit 0
-        
     fi
+    
+    # Limpa o terminal após solicitar o email do Git
     clear
+    
     # Instala o pacote dialog
     sudo apt-get update
     sudo apt-get install dialog -y
@@ -40,7 +40,6 @@ show_dialog() {
     sudo apt-get update
     sudo apt-get install apache2 -y
     progress=20
-    
     dialog --infobox "Apache instalado com sucesso." 10 30
     sleep 1
     
@@ -48,7 +47,6 @@ show_dialog() {
     sudo apt-get install snapd -y
     sudo snap install core; sudo snap refresh core
     progress=40
-    
     dialog --infobox "Snap e Core instalados com sucesso." 10 30
     sleep 1
     
@@ -57,7 +55,6 @@ show_dialog() {
     sudo apt-get install mysql-server -y
     sudo apt-get install php libapache2-mod-php php-mysql -y
     progress=60
-    
     dialog --infobox "PHP e MySQL instalados com sucesso." 10 30
     sleep 1
     
@@ -79,7 +76,6 @@ show_dialog() {
     sudo apt-get install php-soap -y
     sudo apt-get install php-xml -y
     progress=80
-    
     dialog --infobox "Extensões do PHP instaladas com sucesso." 10 30
     sleep 1
     
@@ -93,7 +89,6 @@ show_dialog() {
     # Executa o processo de instalação segura do MySQL
     sudo mysql_secure_installation -y
     progress=90
-    
     dialog --infobox "MySQL configurado com sucesso." 10 30
     sleep 1
     
@@ -103,7 +98,6 @@ show_dialog() {
     sudo ufw allow http
     sudo ufw allow ssh
     progress=95
-    
     dialog --infobox "Firewall configurado com sucesso." 10 30
     sleep 1
     
@@ -146,6 +140,9 @@ show_dialog() {
         cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
         echo "A chave SSH foi copiada para a área de transferência."
     fi
+    
+    # Limpa o terminal após exibir a chave SSH e aguardar a ação do usuário
+    clear
     
     # Exibe um alerta para o usuário continuar
     dialog --msgbox "Copie a chave SSH e clique em OK para continuar." 10 30
