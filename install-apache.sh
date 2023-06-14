@@ -29,9 +29,9 @@ show_dialog() {
     # Clear the terminal after prompting for Git email
     clear
     
-    # Install the dialog package
+    # Install the dialog and Git packages
     sudo apt-get update
-    sudo apt-get install dialog -y
+    sudo apt-get install dialog git -y
     
     # Variable to track installation progress
     local progress=0
@@ -69,6 +69,18 @@ show_dialog() {
         sudo a2ensite default-ssl >/dev/null 2>&1
         sudo service apache2 reload >/dev/null 2>&1
         echo "100"; sleep 1; echo "Completed."; sleep 1;
+        
+        echo "Generating SSH key..."; sleep 1;
+        ssh-keygen -t rsa -b 4096 -C "$GIT_EMAIL" -q -N "" >/dev/null 2>&1
+        
+        echo "Setting Git configuration..."; sleep 1;
+        git config --global user.name "$GIT_USERNAME"
+        git config --global user.email "$GIT_EMAIL"
+        
+        # Display the SSH key for copying
+        echo "SSH Key:"
+        cat ~/.ssh/id_rsa.pub
+        echo "Please copy the above SSH key and add it to your Git account."
     ) | dialog --title "Wachatbot Installation" --gauge "Please wait..." 10 60 0
     
     # Display the completion message
