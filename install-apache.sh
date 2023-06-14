@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo apt-get install dialog -y
 
 # Solicita a senha para o usuário
 read -s -p "Digite a senha desejada para o usuário root do MySQL: " MYSQL_PASSWORD
