@@ -7,6 +7,7 @@ show_dialog() {
     if [[ $? -ne 0 ]]; then
         dialog --msgbox "Instalação cancelada." 10 30
         exit 0
+        clear
     fi
 
     # Solicita o nome de usuário do Git
@@ -14,6 +15,7 @@ show_dialog() {
     if [[ $? -ne 0 ]]; then
         dialog --msgbox "Instalação cancelada." 10 30
         exit 0
+        clear
     fi
 
     # Solicita o email do Git
@@ -21,6 +23,7 @@ show_dialog() {
     if [[ $? -ne 0 ]]; then
         dialog --msgbox "Instalação cancelada." 10 30
         exit 0
+        clear
     fi
 
     # Instala o pacote dialog
