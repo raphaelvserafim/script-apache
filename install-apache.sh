@@ -125,6 +125,10 @@ show_dialog() {
     
     # Exibe um alerta para o usuário continuar
     dialog --msgbox "Copie a chave SSH e clique em OK para continuar." 10 30
+    if [[ $? -ne 0 ]]; then
+        dialog --msgbox "Instalação cancelada." 10 30
+        exit 0
+    fi
     
     # Clona o repositório Git na pasta wachatbot
     cd /var/www/html
