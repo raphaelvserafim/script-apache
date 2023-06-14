@@ -6,24 +6,27 @@ show_dialog() {
     MYSQL_PASSWORD=$(dialog --stdout --passwordbox "Digite a senha desejada para o usuário root do MySQL:" 10 40)
     if [[ $? -ne 0 ]]; then
         dialog --msgbox "Instalação cancelada." 10 30
+       clear
         exit 0
-        clear
+        
     fi
 
     # Solicita o nome de usuário do Git
     GIT_USERNAME=$(dialog --stdout --inputbox "Digite o nome de usuário do Git:" 10 40)
     if [[ $? -ne 0 ]]; then
         dialog --msgbox "Instalação cancelada." 10 30
-        exit 0
         clear
+        exit 0
+        
     fi
 
     # Solicita o email do Git
     GIT_EMAIL=$(dialog --stdout --inputbox "Digite o email do Git:" 10 40)
     if [[ $? -ne 0 ]]; then
         dialog --msgbox "Instalação cancelada." 10 30
-        exit 0
         clear
+        exit 0
+         
     fi
 
     # Instala o pacote dialog
