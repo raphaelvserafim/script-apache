@@ -22,7 +22,7 @@ show_dialog() {
         dialog --msgbox "Instalação cancelada." 10 30
         exit 0
     fi
-
+    
     # Instala o pacote dialog
     sudo apt-get update
     sudo apt-get install dialog -y
@@ -35,16 +35,25 @@ show_dialog() {
     sudo apt-get install apache2 -y
     progress=20
     
+    dialog --infobox "Apache instalado com sucesso." 10 30
+    sleep 1
+    
     # Instala o Snap package manager e atualiza o pacote core
     sudo apt-get install snapd -y
     sudo snap install core; sudo snap refresh core
     progress=40
+    
+    dialog --infobox "Snap e Core instalados com sucesso." 10 30
+    sleep 1
     
     # Instala as dependências necessárias para o PHP e o MySQL
     sudo apt-get install curl -y
     sudo apt-get install mysql-server -y
     sudo apt-get install php libapache2-mod-php php-mysql -y
     progress=60
+    
+    dialog --infobox "PHP e MySQL instalados com sucesso." 10 30
+    sleep 1
     
     # Define a senha fornecida pelo usuário para o MySQL
     echo "mysql-server mysql-server/root_password password $MYSQL_PASSWORD" | sudo debconf-set-selections
@@ -65,6 +74,9 @@ show_dialog() {
     sudo apt-get install php-xml -y
     progress=80
     
+    dialog --infobox "Extensões do PHP instaladas com sucesso." 10 30
+    sleep 1
+    
     sudo apt-get install composer -y
     sudo apt-get install git -y
     
@@ -76,12 +88,18 @@ show_dialog() {
     sudo mysql_secure_installation -y
     progress=90
     
+    dialog --infobox "MySQL configurado com sucesso." 10 30
+    sleep 1
+    
     # Habilita o firewall e permite tráfego HTTP e SSH
     sudo apt-get install ufw -y
     sudo ufw enable
     sudo ufw allow http
     sudo ufw allow ssh
     progress=95
+    
+    dialog --infobox "Firewall configurado com sucesso." 10 30
+    sleep 1
     
     # Desativa a listagem de diretórios na configuração do Apache
     echo "Options -Indexes" | sudo tee -a /etc/apache2/apache2.conf
