@@ -1,5 +1,4 @@
 #!/bin/bash
-sudo apt-get install dialog -y
 
 # Solicita a senha para o usuário
 read -s -p "Digite a senha desejada para o usuário root do MySQL: " MYSQL_PASSWORD
@@ -12,7 +11,8 @@ read -p "Digite o nome de usuário do Git: " GIT_USERNAME
 read -p "Digite o email do Git: " GIT_EMAIL
 
 # Instala o pacote dialog
-sudo apt install dialog -y
+sudo apt-get update
+sudo apt-get install dialog -y
 
 # Função para exibir a caixa de diálogo
 show_dialog() {
@@ -20,19 +20,19 @@ show_dialog() {
     local progress=0
     
     # Atualiza a lista de pacotes e instala o Apache
-    sudo apt update -y
-    sudo apt install apache2 -y
+    sudo apt-get update
+    sudo apt-get install apache2 -y
     progress=20
     
     # Instala o Snap package manager e atualiza o pacote core
-    sudo apt install snapd -y
+    sudo apt-get install snapd -y
     sudo snap install core; sudo snap refresh core
     progress=40
     
     # Instala as dependências necessárias para o PHP e o MySQL
-    sudo apt install curl -y
-    sudo apt install mysql-server -y
-    sudo apt install php libapache2-mod-php php-mysql -y
+    sudo apt-get install curl -y
+    sudo apt-get install mysql-server -y
+    sudo apt-get install php libapache2-mod-php php-mysql -y
     progress=60
     
     # Define a senha fornecida pelo usuário para o MySQL
@@ -54,8 +54,8 @@ show_dialog() {
     sudo apt-get install php-xml -y
     progress=80
     
-    sudo apt install composer -y
-    sudo apt install git -y
+    sudo apt-get install composer -y
+    sudo apt-get install git -y
     
     # Configura as informações do usuário do Git
     git config --global user.name "$GIT_USERNAME"
