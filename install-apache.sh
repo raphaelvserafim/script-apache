@@ -27,6 +27,10 @@ sudo apt-get install php-openssl  -y
 sudo apt-get install php-soap -y 
 sudo apt-get install php-xml -y 
 
+sudo apt install composer -y
+
+sudo apt install git -y
+
 # Secure MySQL installation
 sudo mysql_secure_installation -y 
 
@@ -49,7 +53,7 @@ sudo make-ssl-cert generate-default-snakeoil --force-overwrite
 sudo a2ensite default-ssl
 sudo service apache2 reload
 
-apt install composer -y
+
 
 
 # Monitor Apache logs
