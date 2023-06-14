@@ -1,21 +1,20 @@
 #!/bin/bash
 
-# Solicita a senha para o usuário
-read -s -p "Digite a senha desejada para o usuário root do MySQL: " MYSQL_PASSWORD
-echo
-
-# Solicita o nome de usuário do Git
-read -p "Digite o nome de usuário do Git: " GIT_USERNAME
-
-# Solicita o email do Git
-read -p "Digite o email do Git: " GIT_EMAIL
-
-# Instala o pacote dialog
-sudo apt-get update
-sudo apt-get install dialog -y
-
 # Função para exibir a caixa de diálogo
 show_dialog() {
+    # Solicita a senha para o usuário
+    MYSQL_PASSWORD=$(dialog --stdout --passwordbox "Digite a senha desejada para o usuário root do MySQL:" 10 40)
+    
+    # Solicita o nome de usuário do Git
+    GIT_USERNAME=$(dialog --stdout --inputbox "Digite o nome de usuário do Git:" 10 40)
+    
+    # Solicita o email do Git
+    GIT_EMAIL=$(dialog --stdout --inputbox "Digite o email do Git:" 10 40)
+
+    # Instala o pacote dialog
+    sudo apt-get update
+    sudo apt-get install dialog -y
+    
     # Variável para controlar o progresso da instalação
     local progress=0
     
