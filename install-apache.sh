@@ -2,6 +2,11 @@
 
 # Function to display the dialog box
 show_dialog() {
+    
+    # Install the dialog, Git, and cURL packages
+    sudo apt-get update
+    sudo apt-get install dialog  -y
+    
     # Prompt for the MySQL root user password
     MYSQL_PASSWORD=$(dialog --stdout --passwordbox "Enter the desired password for the MySQL root user:" 10 40)
     if [[ $? -ne 0 ]]; then
@@ -13,9 +18,8 @@ show_dialog() {
     # Clear the terminal after prompting for Git email
     clear
     
-    # Install the dialog, Git, and cURL packages
-    sudo apt-get update
-    sudo apt-get install dialog git curl -y
+    sudo apt-get install git curl -y
+    
     
     # Variable to track installation progress
     local progress=0
