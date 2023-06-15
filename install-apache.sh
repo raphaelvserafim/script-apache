@@ -10,28 +10,12 @@ show_dialog() {
         exit 0
     fi
     
-    # Prompt for the Git username
-    GIT_USERNAME=$(dialog --stdout --inputbox "Enter the Git username:" 10 40)
-    if [[ $? -ne 0 ]]; then
-        dialog --msgbox "Installation canceled." 10 30
-        clear
-        exit 0
-    fi
-    
-    # Prompt for the Git email
-    GIT_EMAIL=$(dialog --stdout --inputbox "Enter the Git email:" 10 40)
-    if [[ $? -ne 0 ]]; then
-        dialog --msgbox "Installation canceled." 10 30
-        clear
-        exit 0
-    fi
-    
     # Clear the terminal after prompting for Git email
     clear
     
-    # Install the dialog and Git packages
+    # Install the dialog, Git, and cURL packages
     sudo apt-get update
-    sudo apt-get install dialog git -y
+    sudo apt-get install dialog git curl -y
     
     # Variable to track installation progress
     local progress=0
@@ -70,18 +54,14 @@ show_dialog() {
         sudo service apache2 reload >/dev/null 2>&1
         echo "100"; sleep 1; echo "Completed."; sleep 1;
         
-        echo "Generating SSH key..."; sleep 1;
-        ssh-keygen -t rsa -b 4096 -C "$GIT_EMAIL" -q -N "" >/dev/null 2>&1
+        echo "Installing Composer..."; sleep 1;
+        sudo apt-get install curl -y >/dev/null 2>&1
+        EXPECTED_SIGNATURE="$(curl -sS https://composer.github.io/installer.sig)"
+        curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer >/dev/null 2>&1
+        sudo chmod +x /usr/local/bin/composer >/dev/null 2>&1
+        echo "Composer installed."; sleep 1;
         
-        echo "Setting Git configuration..."; sleep 1;
-        git config --global user.name "$GIT_USERNAME"
-        git config --global user.email "$GIT_EMAIL"
-        
-        # Display the SSH key for copying
-        echo "SSH Key:"
-        cat ~/.ssh/id_rsa.pub
-        echo "Please copy the above SSH key and add it to your Git account."
-    ) | dialog --title "Wachatbot Installation" --gauge "Please wait..." 10 60 0
+    ) | dialog --title "Installation Server" --gauge "Please wait..." 10 60 0
     
     # Display the completion message
     dialog --msgbox "Installation completed!" 10 30
