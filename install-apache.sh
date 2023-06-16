@@ -56,8 +56,9 @@ show_dialog() {
     echo "mysql-server mysql-server/root_password_again password $MYSQL_PASSWORD" | sudo debconf-set-selections
     echo "phpmyadmin phpmyadmin/mysql/app-pass password $MYSQL_PASSWORD" | sudo debconf-set-selections
     echo "phpmyadmin phpmyadmin/mysql/admin-pass password $MYSQL_PASSWORD" | sudo debconf-set-selections
-    
-    sudo apt-get install phpmyadmin php-zip php-gd php-json php-curl php-mbstring mcrypt php-soap php-xml -y
+    sudo apt install php-fpm -y
+    sudo a2enmod php  
+    sudo apt-get install php phpmyadmin php-zip php-gd php-json php-curl php-mbstring mcrypt php-soap php-xml -y
     ((progress += 10))
     clear
     
