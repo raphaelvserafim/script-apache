@@ -52,7 +52,9 @@ show_dialog() {
     update_progress "$progress" "Installing PHP extensions..."
     echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | sudo debconf-set-selections
     echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | sudo debconf-set-selections
-
+    echo "mysql-server mysql-server/root_password password $MYSQL_PASSWORD" | sudo debconf-set-selections
+    echo "mysql-server mysql-server/root_password_again password $MYSQL_PASSWORD" | sudo debconf-set-selections
+    
     sudo apt-get install phpmyadmin php-zip php-gd php-json php-curl php-mbstring mcrypt php-soap php-xml -y
     ((progress += 10))
     clear
