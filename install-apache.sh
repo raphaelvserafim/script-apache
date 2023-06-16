@@ -1,11 +1,16 @@
 #!/bin/bash
 
+# Function to generate a strong password
+generate_password() {
+    local password=$(date +%s%N | sha256sum | head -c 16)
+    echo "$password"
+}
+
 # Function to display the dialog box
 show_dialog() {
-    
     # Install the dialog, Git, and cURL packages
     sudo apt-get update
-    sudo apt-get install dialog  -y
+    sudo apt-get install dialog -y
     
     # Prompt for the MySQL root user password
     MYSQL_PASSWORD=$(dialog --stdout --passwordbox "Enter the desired password for the MySQL root user:" 10 40)
@@ -15,11 +20,21 @@ show_dialog() {
         exit 0
     fi
     
+    # Prompt for the username to create a new MySQL user
+    MYSQL_USERNAME=$(dialog --stdout --inputbox "Enter the username for the new MySQL user:" 10 40)
+    if [[ $? -ne 0 ]]; then
+        dialog --msgbox "Installation canceled." 10 30
+        clear
+        exit 0
+    fi
+    
+    # Generate a strong password for the new MySQL user
+    MYSQL_USER_PASSWORD=$(generate_password)
+    
     # Clear the terminal after prompting for Git email
     clear
     
     sudo apt-get install git curl -y
-    
     
     # Variable to track installation progress
     local progress=0
@@ -43,6 +58,10 @@ show_dialog() {
         echo "mysql-server mysql-server/root_password password $MYSQL_PASSWORD" | sudo debconf-set-selections
         echo "mysql-server mysql-server/root_password_again password $MYSQL_PASSWORD" | sudo debconf-set-selections
         sudo mysql_secure_installation -y >/dev/null 2>&1
+        
+        # Create a new MySQL user with a strong password
+        sudo mysql -uroot -p$MYSQL_PASSWORD -e "CREATE USER '$MYSQL_USERNAME'@'localhost' IDENTIFIED BY '$MYSQL_USER_PASSWORD'; GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USERNAME'@'localhost' WITH GRANT OPTION;"
+        
         echo "95"; sleep 1; echo "Configuring Firewall..."; sleep 1;
         sudo apt-get install ufw -y >/dev/null 2>&1
         sudo ufw enable >/dev/null 2>&1
@@ -65,6 +84,9 @@ show_dialog() {
         sudo chmod +x /usr/local/bin/composer >/dev/null 2>&1
         echo "Composer installed."; sleep 1;
         
+        echo "MySQL Username: $MYSQL_USERNAME" >/tmp/mysql_credentials.txt
+        echo "MySQL Password: $MYSQL_USER_PASSWORD" >>/tmp/mysql_credentials.txt
+        
     ) | dialog --title "Installation Server" --gauge "Please wait..." 10 60 0
     
     # Display the completion message
@@ -73,3 +95,7 @@ show_dialog() {
 
 # Call the function to display the dialog box
 show_dialog
+
+# Display MySQL credentials
+dialog --title "MySQL Credentials" --textbox /tmp/mysql_credentials.txt 10 40
+rm /tmp/mysql_credentials.txt
