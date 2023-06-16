@@ -13,12 +13,7 @@ show_dialog() {
     sudo apt-get install dialog -y
     
     # Prompt for the MySQL root user password
-    MYSQL_PASSWORD=$(dialog --stdout --passwordbox "Enter the desired password for the MySQL root user:" 10 40)
-    if [[ $? -ne 0 ]]; then
-        dialog --msgbox "Installation canceled." 10 30
-        clear
-        exit 0
-    fi
+    MYSQL_PASSWORD=$(generate_password)
     
     # Prompt for the username to create a new MySQL user
     MYSQL_USERNAME=$(dialog --stdout --inputbox "Enter the username for the new MySQL user:" 10 40)
@@ -29,7 +24,7 @@ show_dialog() {
     fi
     
     # Generate a strong password for the new MySQL user
-    MYSQL_USER_PASSWORD=$(generate_password)
+    MYSQL_USER_PASSWORD=$MYSQL_PASSWORD
     
     # Clear the terminal after prompting for Git email
     clear
